@@ -1,9 +1,6 @@
-#include <time.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
-
-double matrizA[1048580], matrizB[1048580], matrizC[1048580];
 
 double generadorNumeroAleatorio()
 {   
@@ -19,40 +16,44 @@ double generadorNumeroAleatorio()
     return numeroAleatorio;
 }
 
-void llenarMatriz(double *puntero, int n)
+void llenarMatriz(double *M, int n)
 {
     int i;
     for (i = 0; i < n*n; i++)
     {
-        *(puntero + i) = generadorNumeroAleatorio();
+        M[i] = generadorNumeroAleatorio();
     }
 }
 
-void imprimirMatriz(double *puntero, int n)
+void imprimirMatriz(double *M, int n)
 {   
     int i, j;
     for (i = 0; i < n*n; i+=n)
     {
         for (j = 0; j < n; j++)
         {   
-            printf("%.7lf ", *(puntero + i + j));
+            printf("%.7lf ", M[i+j]);
         }
         printf("\n");
     }
 }
 
-void multiplicarMatrices(double *punteroA, double *punteroB, double *punteroC, int n)
+void multiplicarMatrices(double *A, double *B, double *C, int n)
 {   
-    int i, j, k;
+    int i, j, k, pos, acumN = 0;
+    double sum = 0.0;
     for (i = 0; i < n*n; i+=n)
     {
         for (j = 0; j < n; j++)
         {   
-            *(punteroC + i + j) = 0.0;
+            acumN = 0;
+            sum = 0.0;
             for (k = 0; k < n; k++)
             {
-                *(punteroC + i + j) += *(punteroA + k + i) * *(punteroB + k*n + j);
+                sum += A[k+i] * B[acumN + j];
+                acumN+=n;
             }
+            C[i+j] = sum;
         }
     }
 }
@@ -66,17 +67,19 @@ void main()
     printf("Por favor, ingresa un numero entero, el tamanio de la matriz: ");
     scanf("%d", &n);
 
-    // double matrizA[n*n], matrizB[n*n], matrizC[n*n];
+    double *matrizA, *matrizB, *matrizC;
+    matrizA = (double *) malloc((n*n) * sizeof(double));
+    matrizB = (double *) malloc((n*n) * sizeof(double));
+    matrizC = (double *) malloc((n*n) * sizeof(double));
     
     // Generar los números aleatorios y llenar matrices
-    double *punteroA = matrizA, *punteroB = matrizB, *punteroC = matrizC;
-    llenarMatriz(punteroA, n);
-    llenarMatriz(punteroB, n);
+    llenarMatriz(matrizA, n);
+    llenarMatriz(matrizB, n);
     
     // Registra el tiempo de inicio
     clock_t inicio = clock();
 
-    multiplicarMatrices(punteroA, punteroB, punteroC, n);
+    multiplicarMatrices(matrizA, matrizB, matrizC, n);
 
     // Registra el tiempo de finalización
     clock_t fin = clock();
@@ -85,21 +88,17 @@ void main()
     double tiempo_transcurrido = (double)(fin - inicio) / CLOCKS_PER_SEC;
     printf("Tiempo de ejecucion: %f segundos\n", tiempo_transcurrido);
 
-    // // Calcula la diferencia de tiempo en milisegundos
-    // double tiempo_transcurrido = (double)(fin - inicio) * 1000 / CLOCKS_PER_SEC;
-    // printf("Tiempo de ejecución: %.2f milisegundos\n", tiempo_transcurrido);
-
     // Generar archivo de salida con las matrices generadas y multiplicadas
     freopen("matrices.txt", "w", stdout);
 
     printf("Matriz A: \n");
-    imprimirMatriz(punteroA, n);
+    imprimirMatriz(matrizA, n);
 
     printf("Matriz B: \n");
-    imprimirMatriz(punteroB, n);
+    imprimirMatriz(matrizB, n);
 
     printf("Matriz C: \n");
-    imprimirMatriz(punteroC, n);
+    imprimirMatriz(matrizC, n);
 }
 
 //gcc multiplicarMatricesSec.c -o multiplicarMatricesSec && .\multiplicarMatricesSec
