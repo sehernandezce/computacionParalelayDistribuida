@@ -1,10 +1,9 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-const int N = 1048580;
-
-double matrizA[N], matrizB[N], matrizC[N];
+double matrizA[1048580], matrizB[1048580], matrizC[1048580];
 
 double generadorNumeroAleatorio()
 {   
@@ -64,7 +63,7 @@ void main()
     srand(time(NULL));
 
     int n;
-    printf("Por favor, ingresa un número entero, el tamaño de la matriz: ");
+    printf("Por favor, ingresa un numero entero, el tamanio de la matriz: ");
     scanf("%d", &n);
 
     // double matrizA[n*n], matrizB[n*n], matrizC[n*n];
@@ -74,8 +73,22 @@ void main()
     llenarMatriz(punteroA, n);
     llenarMatriz(punteroB, n);
     
+    // Registra el tiempo de inicio
+    clock_t inicio = clock();
+
     multiplicarMatrices(punteroA, punteroB, punteroC, n);
-    
+
+    // Registra el tiempo de finalización
+    clock_t fin = clock();
+
+    // Calcula la diferencia de tiempo en segundos
+    double tiempo_transcurrido = (double)(fin - inicio) / CLOCKS_PER_SEC;
+    printf("Tiempo de ejecucion: %f segundos\n", tiempo_transcurrido);
+
+    // // Calcula la diferencia de tiempo en milisegundos
+    // double tiempo_transcurrido = (double)(fin - inicio) * 1000 / CLOCKS_PER_SEC;
+    // printf("Tiempo de ejecución: %.2f milisegundos\n", tiempo_transcurrido);
+
     // Generar archivo de salida con las matrices generadas y multiplicadas
     freopen("matrices.txt", "w", stdout);
 
