@@ -1,9 +1,9 @@
 /otros
 /hilos
 /matrices/notas.txt
+/matrices/matrices.txt
 
 *.exe
 *.o
 *.out
-
-
+*.txt
