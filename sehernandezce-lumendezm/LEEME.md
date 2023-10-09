@@ -40,8 +40,8 @@
 
 6 - Para ejecutar el programa secuencial: 
         
-        .\build\Release\video_reduccion_secuencial inputVideo.mp4 outputVideo.mp4
+        .\build\Release\video_reduccion_secuencial .\media\inputVideo.mp4 .\media\outputVideo.mp4
 
 7 - Para ejecutar el programa paralelo: 
         
-        .\build\Release\video_reduccion_paralelo inputVideo.mp4 outputVideo.mp4 4
+        .\build\Release\video_reduccion_paralelo .\media\inputVideo.mp4 .\media\outputVideo.mp4 4
