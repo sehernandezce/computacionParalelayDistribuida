@@ -9,7 +9,6 @@ void main(int argc, char *argv[])
 
     printf("Archivo de lectura: %s\n", archivoLectura);
     printf("Archivo de escritura: %s\n", archivoEscritura);
-
 }
 
 // Windows
