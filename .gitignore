@@ -5,5 +5,8 @@
 
 *.exe
 *.o
+*.bin
+*.run
 *.out
-*.txt
+# *.txt
+# *.sh
