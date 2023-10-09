@@ -3,8 +3,10 @@
 /matrices/notas.txt
 /matrices/matrices.txt
 
-/sehernandezce-lumendezm/src/video_reduccion_paralelo
-/sehernandezce-lumendezm/src/video_reduccion_secuencial
+*/video_reduccion_paralelo
+*/video_reduccion_secuencial
+*/media/inputVideo.*
+*/media/outputVideo.*
 
 */build
 *.exe
@@ -14,3 +16,4 @@
 *.out
 # *.txt
 # *.sh
+
