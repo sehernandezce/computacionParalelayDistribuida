@@ -3,8 +3,8 @@
 /matrices/notas.txt
 /matrices/matrices.txt
 
-/sehernandezce-lumendezm/video_reduccion_paralelo
-/sehernandezce-lumendezm/video_reduccion_secuencial
+/sehernandezce-lumendezm/src/video_reduccion_paralelo
+/sehernandezce-lumendezm/src/video_reduccion_secuencial
 
 */build
 *.exe
