@@ -1,3 +1,4 @@
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -5,6 +6,9 @@
 
 int main(int argc, char *argv[])
 {   
+    // Registra el tiempo de inicio
+    clock_t inicio = clock();
+
     // Lectura de parametros
     char *archive_read = argv[1];
     char *archive_write = argv[2];
@@ -71,7 +75,7 @@ int main(int argc, char *argv[])
         outputVideo << new_frame;
 
         // Muestra el frame procesado
-        cv::imshow("Frame Procesado", new_frame);
+        // cv::imshow("Frame Procesado", new_frame);
 
         // Espera un momento y verifica si se presionó la tecla 'q' para salir del bucle
         if (cv::waitKey(1) == 'q') {
@@ -83,6 +87,14 @@ int main(int argc, char *argv[])
     inputVideo.release();
     outputVideo.release();
     cv::destroyAllWindows();
+
+
+    // Registra el tiempo de finalización
+    clock_t fin = clock();
+
+    // Calcula la diferencia de tiempo en segundos
+    double tiempo_transcurrido = (double)(fin - inicio) / CLOCKS_PER_SEC;
+    printf("Tiempo de ejecucion: %f segundos\n", tiempo_transcurrido);
 
     return 0;
 }
