@@ -2,7 +2,18 @@
 
 # Practica 1
 
+## Linux
+1 - Compilar el programa secuencial:
+        g++ -o video_reduccion_secuencial video_reduccion_secuencial.cpp `pkg-config --cflags --libs opencv4`
 
+2 - Compilar el programa paralelo:
+        g++ -fopenmp -o video_reduccion_paralelo video_reduccion_paralelo.cpp `pkg-config --cflags --libs opencv4` 
+
+3 - Para ejecutar el programa secuencial: 
+        time ./video_reduccion_secuencial inputVideo.mp4 outputVideo.mp4
+
+4 - Para ejecutar el programa paralelo: 
+        time ./video_reduccion_paralelo inputVideo.mp4 outputVideo.mp4 4
 
 ## Windows
 1 - Descargar opencv https://opencv.org/releases/
