@@ -43,32 +43,27 @@ int main(int argc, char *argv[])
             break;
         }
 
-        cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-
+        // cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+        
         // Procesar el frame
         for(int row = 0; row < new_frame.rows; row++)
         {
             for(int col = 0; col < new_frame.cols; col++)
             {   
-                int red, green, blue;
-                
-                blue = frame.at<cv::Vec3b>(row*redux, col*redux)[0];
-                green = frame.at<cv::Vec3b>(row*redux, col*redux)[1];
-                red = frame.at<cv::Vec3b>(row*redux, col*redux)[2];
+                int red = 0, green = 0, blue = 0;
 
-                for(int i = 1; i < redux; i++)
+                for(int i = 0; i < redux; i++)
                 {
-                    for(int j = 1; j < redux; j++)
+                    for(int j = 0; j < redux; j++)
                     {
-                        blue += frame.at<cv::Vec3b>(row*redux + i, col*redux + j)[0];
-                        green += frame.at<cv::Vec3b>(row*redux + i, col*redux + j)[1];
-                        red += frame.at<cv::Vec3b>(row*redux + i, col*redux + j)[2];
+                        blue += static_cast<int>(frame.at<cv::Vec3b>(row*redux + i, col*redux + j)[0]);
+                        green += static_cast<int>(frame.at<cv::Vec3b>(row*redux + i, col*redux + j)[1]);
+                        red += static_cast<int>(frame.at<cv::Vec3b>(row*redux + i, col*redux + j)[2]);
                     }
                 }
-
-                new_frame.at<cv::Vec3b>(row, col)[0] = (blue+(redux*redux)-1)/(redux*redux);
-                new_frame.at<cv::Vec3b>(row, col)[1] = (green+(redux*redux)-1)/(redux*redux);
-                new_frame.at<cv::Vec3b>(row, col)[2] = (red+(redux*redux)-1)/(redux*redux);
+                new_frame.at<cv::Vec3b>(row, col)[0] = blue/(redux*redux);
+                new_frame.at<cv::Vec3b>(row, col)[1] = green/(redux*redux);
+                new_frame.at<cv::Vec3b>(row, col)[2] = red/(redux*redux);
             }
         }
 
@@ -86,7 +81,7 @@ int main(int argc, char *argv[])
 
     // Libera los recursos
     inputVideo.release();
-    // outputVideo.release();
+    outputVideo.release();
     cv::destroyAllWindows();
 
     return 0;
