@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
                 for(col = 0; col < new_frame.cols; col++)
                 {   
                     red = 0, green = 0, blue = 0;
-+
                     for(i = 0; i < redux; i++)
                     {
                         for(j = 0; j < redux; j++)
