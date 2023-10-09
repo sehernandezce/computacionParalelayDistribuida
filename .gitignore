@@ -3,6 +3,9 @@
 /matrices/notas.txt
 /matrices/matrices.txt
 
+/sehernandezce-lumendezm/video_reduccion_paralelo
+/sehernandezce-lumendezm/video_reduccion_secuencial
+
 *.exe
 *.o
 *.bin
