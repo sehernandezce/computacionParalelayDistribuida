@@ -1,0 +1,5 @@
+Tiempo de ejecucion secuencial (s): 5.498723
+Tiempo de ejecucion paralelo, numero de hilos 2 (s): 5.161442
+Tiempo de ejecucion paralelo, numero de hilos 4 (s): 5.260728
+Tiempo de ejecucion paralelo, numero de hilos 6 (s): 5.133978
+Tiempo de ejecucion paralelo, numero de hilos 16 (s): 5.091308
