@@ -37,15 +37,7 @@ int main(int argc, char *argv[])
     cv::Mat new_frame(frame_height, frame_width, CV_8UC3, cv::Scalar(255,255,255));
 
     // Captura un frame del video original
-    while (true) {
-        
-        inputVideo >> frame;
-
-        // Verifica si el frame se capturó correctamente
-        if (frame.empty()) {
-            std::cerr << "No se pudo capturar el frame." << std::endl;
-            break;
-        }
+    while (inputVideo.read(frame)) {
 
         // cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
         
@@ -72,15 +64,10 @@ int main(int argc, char *argv[])
         }
 
         // Escribe el frame procesado en el nuevo video
-        outputVideo << new_frame;
+        outputVideo.write(new_frame);
 
         // Muestra el frame procesado
         // cv::imshow("Frame Procesado", new_frame);
-
-        // Espera un momento y verifica si se presionó la tecla 'q' para salir del bucle
-        if (cv::waitKey(1) == 'q') {
-            break;
-        }
     }
 
     // Libera los recursos

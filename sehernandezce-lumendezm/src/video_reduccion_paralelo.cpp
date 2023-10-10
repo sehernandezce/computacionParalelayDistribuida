@@ -35,31 +35,21 @@ int main(int argc, char *argv[])
     cv::VideoWriter outputVideo(archive_write, cv::VideoWriter::fourcc('X', '2', '6', '4'), fps, cv::Size(frame_width,frame_height));
 
     cv::Mat frame; // Variable para almacenar el frame capturado
-    cv::Mat new_frame(frame_height, frame_width, CV_8UC3, cv::Scalar(255,255,255));
+    cv::Mat new_frame(frame_height, frame_width, CV_8UC3);
+
+    // Crear hilos
+    omp_set_num_threads(numeroHilos);
+    int row = 0, col = 0, i = 0, j = 0, red = 0, green = 0, blue = 0;
 
     // Captura un frame del video original
-    while (true) {
+    while (inputVideo.read(frame)) {
         
-        inputVideo >> frame;
-
-        // Verifica si el frame se capturó correctamente
-        if (frame.empty()) {
-            std::cerr << "No se pudo capturar el frame." << std::endl;
-            break;
-        }
-
-        // cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-        // Crear hilos
-       
-        omp_set_num_threads(numeroHilos);
-        
-        int row = 0, col = 0, i = 0, j = 0, red = 0, green = 0, blue = 0;
         // Procesar el frame
         #pragma omp parallel shared(frame, new_frame) private(row, col, i, j, red, green, blue)
         {
             #pragma omp for schedule (static) nowait
             for(row = 0; row < new_frame.rows; row++)
-            {
+            {   
                 for(col = 0; col < new_frame.cols; col++)
                 {   
                     red = 0, green = 0, blue = 0;
@@ -80,15 +70,10 @@ int main(int argc, char *argv[])
         }
 
         // Escribe el frame procesado en el nuevo video
-        outputVideo << new_frame;
+        outputVideo.write(new_frame);
 
         // Muestra el frame procesado
         // cv::imshow("Frame Procesado", new_frame);
-
-        // Espera un momento y verifica si se presionó la tecla 'q' para salir del bucle
-        if (cv::waitKey(1) == 'q') {
-            break;
-        }
     }
 
     // Libera los recursos
