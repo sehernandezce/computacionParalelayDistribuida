@@ -21,6 +21,12 @@
 
 Nota: Para ejecutar las pruebas ejecute el script con bash. El video debe contener el nombre inputVideo.mp4 y debe estar en la carpeta media.
 
+        Ejecutar el comando para asignar permisos:
+
+        chmod +x ./script_ejecutar_todo_linux.sh
+
+        Ejecutar el script:
+        
         ./script_ejecutar_todo_linux.sh
 
 ## Windows
