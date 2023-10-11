@@ -19,6 +19,10 @@
        
         time ./video_reduccion_paralelo inputVideo.mp4 outputVideo.mp4 4
 
+Nota: Para ejecutar las pruebas ejecute el script con bash. El video debe contener el nombre inputVideo.mp4 y debe estar en la carpeta media
+
+        ./script_ejecutar_todo_linux.sh
+
 ## Windows
 1 - Descargar opencv https://opencv.org/releases/
 
@@ -45,3 +49,7 @@
 7 - Para ejecutar el programa paralelo: 
         
         .\build\Release\video_reduccion_paralelo .\media\inputVideo.mp4 .\media\outputVideo.mp4 4
+
+Nota: Para ejecutar las pruebas ejecute el script con python. El video debe contener el nombre inputVideo.mp4 y debe estar en la carpeta media
+
+        `script_ejecutar_todo_win.py`

@@ -5,10 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 int main(int argc, char *argv[])
-{   
-    // Registra el tiempo de inicio
-    clock_t inicio = clock();
-
+{  
     // Lectura de parametros
     char *archive_read = argv[1];
     char *archive_write = argv[2];
@@ -74,14 +71,6 @@ int main(int argc, char *argv[])
     inputVideo.release();
     outputVideo.release();
     cv::destroyAllWindows();
-
-
-    // Registra el tiempo de finalización
-    clock_t fin = clock();
-
-    // Calcula la diferencia de tiempo en segundos
-    double tiempo_transcurrido = (double)(fin - inicio) / CLOCKS_PER_SEC;
-    printf("Tiempo de ejecucion: %f segundos\n", tiempo_transcurrido);
 
     return 0;
 }

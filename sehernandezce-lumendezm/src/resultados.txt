@@ -1,5 +1,5 @@
-Tiempo de ejecucion secuencial (s): 8.624645
-Tiempo de ejecucion paralelo, numero de hilos 2 (s): 8.107834
-Tiempo de ejecucion paralelo, numero de hilos 4 (s): 9.162043
-Tiempo de ejecucion paralelo, numero de hilos 6 (s): 9.120353
-Tiempo de ejecucion paralelo, numero de hilos 16 (s): 10.260365
+1 Video Secuencial = 7.36 segundos
+2 Video Paralelo (2 hilos) = 6.07 segundos
+3 Video Paralelo (4 hilos) = 6.13 segundos
+4 Video Paralelo (8 hilos) = 6.62 segundos
+5 Video Paralelo (16 hilos) = 6.55 segundos

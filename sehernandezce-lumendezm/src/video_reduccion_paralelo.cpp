@@ -6,8 +6,6 @@
 
 int main(int argc, char *argv[])
 {   
-    // Registra el tiempo de inicio
-    clock_t inicio = clock();
 
     // Lectura de parametros
     char *archive_read = argv[1];
@@ -47,7 +45,7 @@ int main(int argc, char *argv[])
         // Procesar el frame
         #pragma omp parallel shared(frame, new_frame) private(row, col, i, j, red, green, blue)
         {
-            #pragma omp for schedule (static) nowait
+            #pragma omp for schedule (dynamic) nowait
             for(row = 0; row < new_frame.rows; row++)
             {   
                 for(col = 0; col < new_frame.cols; col++)
@@ -80,13 +78,6 @@ int main(int argc, char *argv[])
     inputVideo.release();
     outputVideo.release();
     cv::destroyAllWindows();
-
-    // Registra el tiempo de finalización
-    clock_t fin = clock();
-
-    // Calcula la diferencia de tiempo en segundos
-    double tiempo_transcurrido = (double)(fin - inicio) / CLOCKS_PER_SEC;
-    printf("Tiempo de ejecucion: %f segundos\n", tiempo_transcurrido);
 
     return 0;
 }
