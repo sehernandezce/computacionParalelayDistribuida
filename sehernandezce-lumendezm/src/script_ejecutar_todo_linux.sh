@@ -23,7 +23,7 @@ g++ -o "$nombre_secuencial" "$nombre_secuencial".cpp $parametros_opencv
 
 # Verifica si la compilación fue exitosa (secuencial)
 if [ $? -eq 0 ]; then
-  ejecucion_secuencial=$( { time -p ./video_reduccion_secuencial inputVideo.mp4 outputVideo.mp4; } 2>&1 | grep real | awk '{print $2}' )
+  ejecucion_secuencial=$( { time -p ./video_reduccion_secuencial ../media/inputVideo.mp4 ../media/outputVideo.mp4; } 2>&1 | grep real | awk '{print $2}' )
   crear_archivo_salida
   echo "Video Secuencial = $ejecucion_secuencial segundos" > "$archivo_salida"
   echo "El programa secuencial se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
@@ -40,7 +40,7 @@ g++ -fopenmp -o "$nombre_paralelo" "$nombre_paralelo".cpp $parametros_opencv
 if [ $? -eq 0 ]; then
   crear_archivo_salida
   for i in 2 4 8 16; do
-    ejecucion_paralelo=$( { time -p ./video_reduccion_paralelo inputVideo.mp4 outputVideo.mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
+    ejecucion_paralelo=$( { time -p ./video_reduccion_paralelo ../media/inputVideo.mp4 ../media/outputVideo.mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
     echo "Video Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
     echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
   done

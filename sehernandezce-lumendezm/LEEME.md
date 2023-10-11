@@ -13,13 +13,13 @@
 
 3 - Para ejecutar el programa secuencial: 
         
-        time ./video_reduccion_secuencial inputVideo.mp4 outputVideo.mp4
+        time ./video_reduccion_secuencial ../media/inputVideo.mp4 ../media/outputVideo.mp4
 
 4 - Para ejecutar el programa paralelo: 
        
-        time ./video_reduccion_paralelo inputVideo.mp4 outputVideo.mp4 4
+        time ./video_reduccion_paralelo ../media/inputVideo.mp4 ../media/outputVideo.mp4 4
 
-Nota: Para ejecutar las pruebas ejecute el script con bash. El video debe contener el nombre inputVideo.mp4 y debe estar en la carpeta media
+Nota: Para ejecutar las pruebas ejecute el script con bash. El video debe contener el nombre inputVideo.mp4 y debe estar en la carpeta media.
 
         ./script_ejecutar_todo_linux.sh
 
