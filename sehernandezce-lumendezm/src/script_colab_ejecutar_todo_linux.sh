@@ -4,8 +4,8 @@
 # IMPORTANTE: opencv debe estar relacionado (linked) con el pkg-config del sistema.
 
 # Variables importantes para configuración
-carpeta="."
-carpeta_media="../media"
+carpeta="./sehernandezce-lumendezm/src"
+carpeta_media="./sehernandezce-lumendezm/media"
 parametros_opencv="`pkg-config --cflags --libs opencv4`" 
 nombre_secuencial="$carpeta/video_reduccion_secuencial"
 nombre_paralelo_openmp="$carpeta/video_reduccion_paralelo"
@@ -42,39 +42,39 @@ fi
 
 #-----------------------------------------------------------------------
 
-# Compila el programa C++ paralelo OPENMP
-g++ -fopenmp -o "$nombre_paralelo_openmp" "$nombre_paralelo_openmp".cpp $parametros_opencv
-
-# Verifica si la compilación fue exitosa (Paralelo)
-echo "Ejecutando Programa paralelo OPENMP"
-echo "Programa paralelo OPENMP" >> "$archivo_salida"
-if [ $? -eq 0 ]; then
-  crear_archivo_salida
-  for i in 2 4 8 16; do
-    ejecucion_paralelo=$( { time -p "$nombre_paralelo_openmp" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
-    echo "Video en Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
-    echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
-  done
-else
-  echo "Error: La compilación del programa paralelo falló."
-fi
-
-#-----------------------------------------------------------------------
-
-# # Compila el programa C++ paralelo CUDA
-# nvcc -w -o "$nombre_paralelo_cuda" "$nombre_paralelo_cuda".cu $parametros_opencv -std=c++11
+# # Compila el programa C++ paralelo OPENMP
+# g++ -fopenmp -o "$nombre_paralelo_openmp" "$nombre_paralelo_openmp".cpp $parametros_opencv
 
 # # Verifica si la compilación fue exitosa (Paralelo)
-# echo "Ejecutando Programa paralelo CUDA C/C++"
-# echo "Programa paralelo CUDA C/C++" >> "$archivo_salida"
+# echo "Ejecutando Programa paralelo OPENMP"
+# echo "Programa paralelo OPENMP" >> "$archivo_salida"
 # if [ $? -eq 0 ]; then
 #   crear_archivo_salida
-#   for i in 8 16 21 26 32; do
-#     ejecucion_paralelo=$( { time -p "$nombre_paralelo_cuda" "$archivo_video_entrada".mp4 "$archivo_video_salida_cuda$multi".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
-#     multi=$((i * i))
-#     echo "Video en Paralelo ("$multi" hilos*Bloque) = $ejecucion_paralelo segundos" >> "$archivo_salida"
-#     echo "El programa paralelo con "$multi" hilos*Bloque se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+#   for i in 2 4 8 16; do
+#     ejecucion_paralelo=$( { time -p "$nombre_paralelo_openmp" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
+#     echo "Video en Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
+#     echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
 #   done
 # else
 #   echo "Error: La compilación del programa paralelo falló."
 # fi
+
+#-----------------------------------------------------------------------
+
+# Compila el programa C++ paralelo CUDA
+nvcc -w -o "$nombre_paralelo_cuda" "$nombre_paralelo_cuda".cu $parametros_opencv -std=c++11
+
+# Verifica si la compilación fue exitosa (Paralelo)
+echo "Ejecutando Programa paralelo CUDA C/C++"
+echo "Programa paralelo CUDA C/C++" >> "$archivo_salida"
+if [ $? -eq 0 ]; then
+  crear_archivo_salida
+  for i in 8 16 21 26 32; do
+    ejecucion_paralelo=$( { time -p "$nombre_paralelo_cuda" "$archivo_video_entrada".mp4 "$archivo_video_salida_cuda$multi".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
+    multi=$((i * i))
+    echo "Video en Paralelo ("$multi" hilos*Bloque) = $ejecucion_paralelo segundos" >> "$archivo_salida"
+    echo "El programa paralelo con "$multi" hilos*Bloque se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+  done
+else
+  echo "Error: La compilación del programa paralelo falló."
+fi

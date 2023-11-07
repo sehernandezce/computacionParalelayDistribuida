@@ -1,5 +1,12 @@
-1 Video Secuencial = 68,71 segundos
-2 Video Paralelo (2 hilos) = 35,86 segundos
-3 Video Paralelo (4 hilos) = 31,40 segundos
-4 Video Paralelo (8 hilos) = 26,33 segundos
-5 Video Paralelo (16 hilos) = 26,06 segundos
+Video en Secuencial = 54.82 segundos
+Programa paralelo OPENMP
+Video en Paralelo (2 hilos) = 35.86 segundos
+Video en Paralelo (4 hilos) = 31.40 segundos
+Video en Paralelo (8 hilos) = 26.33 segundos
+Video en Paralelo (16 hilos) = 26.06 segundos
+Programa paralelo CUDA C/C++
+Video en Paralelo (64 hilos*Bloque) = 16.56 segundos
+Video en Paralelo (256 hilos*Bloque) = 16.10 segundos
+Video en Paralelo (441 hilos*Bloque) = 13.65 segundos
+Video en Paralelo (676 hilos*Bloque) = 15.16 segundos
+Video en Paralelo (1024 hilos*Bloque) = 16.15 segundos

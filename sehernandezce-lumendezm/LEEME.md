@@ -1,6 +1,4 @@
-// FALTA COLOCAR EL PDF
-
-# Practica 1
+# Practica 1 - Video Reduccion de Resolucion (Secuecial y Paralelo con OpenMP)
 
 ## Linux
 1 - Compilar el programa secuencial:
@@ -59,3 +57,8 @@ Nota: Para ejecutar las pruebas ejecute el script con bash. El video debe conten
 Nota: Para ejecutar las pruebas ejecute el script con python. El video debe contener el nombre inputVideo.mp4 y debe estar en la carpeta media
 
         `script_ejecutar_todo_win.py`
+
+
+# Practica 2 - Video Reduccion de Resolucion (Paralelo con CUDA C/C++)
+
+Esta se realizo en google Colab, por lo que se puede ejecutar en cualquier navegador web.
