@@ -62,3 +62,85 @@ Nota: Para ejecutar las pruebas ejecute el script con python. El video debe cont
 # Practica 2 - Video Reduccion de Resolucion (Paralelo con CUDA C/C++)
 
 Esta se realizo en google Colab, por lo que se puede ejecutar en cualquier navegador web.
+
+# Practica 3 - Video Reduccion de Resolucion (Paralelo con OpenMPI)
+
+Se realizo la configuración en maquinas virtuales en google cloud.
+
+Espiciaciones de las maquinas virtuales:
+- 2 vCPU
+- 2 GB de memoria
+- 10 GB de almacenamiento
+- Debian GNU/Linux 11 (bullseye)
+
+## Librerias necesarias
+
+        sudo apt-get install g++
+
+        sudo apt-get install -y libopencv-dev
+
+        sudo apt-get install openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev
+
+        sudo apt-get install nfs-common
+
+## Configuración de maquinas virtuales
+
+Comandos en servidor (nodo 0):
+        
+        apt-get update
+
+        adduser mpiuser --uid 1001
+        
+        apt-get install openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev
+        
+        apt-get install nfs-kernel-server
+        
+        apt-get install nfs-common
+        
+        su - mpiuser
+        
+        cd /home/mpiuser
+        
+        mkdir shared
+        
+        echo "/home/mpiuser/shared *(rw,sync,no_subtree_check)" | sudo tee /etc/exports
+        
+        sudo service nfs-kernel-server restart
+        
+        exportfs -a
+
+Comandos en cliente:
+
+        sudo adduser mpiuser --uid 1001
+        
+        sudo usermod -aG sudo mpiuser
+
+        su - mpiuser
+        
+        mkdir /home/mpiuser/shared
+        
+        sudo nano /etc/hosts  =>> Configurar dns local
+        
+        sudo mount -t nfs node-0:/home/mpiuser/shared /home/mpiuser/shared
+        
+        mkdir ~/.ssh
+        
+        cd shared
+        
+        cp id_rsa.pub ~/.ssh/authorized_keys
+        
+        cd ..
+        
+        cd .ssh
+        
+        ls -al 
+        
+        sudo chmod 700 ~/.ssh
+        
+        sudo chmod 600 ~/.ssh/authorized_keys
+
+Ejecutar programa:
+
+        mpic++ -o video_reduccion_paralelo_openmpi video_reduccion_paralelo_openmpi.cpp -lm -fopenmp `pkg-config --cflags --libs opencv4`
+        
+        time mpirun -np 2 --hostfile mpi-hosts ./video_reduccion_paralelo_openmpi ../media/inputVideo.mp4 ../media/outputVideo 1

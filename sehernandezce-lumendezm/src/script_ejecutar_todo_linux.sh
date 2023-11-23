@@ -9,11 +9,13 @@ carpeta_media="../media"
 parametros_opencv="`pkg-config --cflags --libs opencv4`" 
 nombre_secuencial="$carpeta/video_reduccion_secuencial"
 nombre_paralelo_openmp="$carpeta/video_reduccion_paralelo"
+nombre_paralelo_openmpi="$carpeta/video_reduccion_paralelo_openmpi"
 nombre_paralelo_cuda="$carpeta/video_reduction_cuda"
 archivo_salida="$carpeta/resultados.txt"
 archivo_video_entrada="$carpeta_media/inputVideo"
 archivo_video_salida_sec="$carpeta_media/outputVideoSec"
 archivo_video_salida_Openmp="$carpeta_media/outputVideoOpenMp"
+archivo_video_salida_Openmpi="$carpeta_media/outputVideoOpenMpi"
 archivo_video_salida_cuda="$carpeta_media/outputVideoCuda"
 
 #-----------------------------------------------------------------------
@@ -25,39 +27,39 @@ crear_archivo_salida() {
   fi
 }
 
-# # Compila el programa C++ secuencial
-g++ -o "$nombre_secuencial" "$nombre_secuencial".cpp $parametros_opencv
+# # # Compila el programa C++ secuencial
+# g++ -o "$nombre_secuencial" "$nombre_secuencial".cpp $parametros_opencv
 
-# Verifica si la compilación fue exitosa (secuencial)
-echo "Ejecutando Programa secuencial"
-echo "Programa secuencial" >> "$archivo_salida"
-if [ $? -eq 0 ]; then
-  ejecucion_secuencial=$( { time -p "$nombre_secuencial" "$archivo_video_entrada".mp4 "$archivo_video_salida_sec".mp4; } 2>&1 | grep real | awk '{print $2}' )
-  crear_archivo_salida
-  echo "Video en Secuencial = $ejecucion_secuencial segundos" > "$archivo_salida"
-  echo "El programa secuencial se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
-else
-  echo "Error: La compilación del programa secuencial falló."
-fi
+# # Verifica si la compilación fue exitosa (secuencial)
+# echo "Ejecutando Programa secuencial"
+# echo "Programa secuencial" >> "$archivo_salida"
+# if [ $? -eq 0 ]; then
+#   ejecucion_secuencial=$( { time -p "$nombre_secuencial" "$archivo_video_entrada".mp4 "$archivo_video_salida_sec".mp4; } 2>&1 | grep real | awk '{print $2}' )
+#   crear_archivo_salida
+#   echo "Video en Secuencial = $ejecucion_secuencial segundos" > "$archivo_salida"
+#   echo "El programa secuencial se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+# else
+#   echo "Error: La compilación del programa secuencial falló."
+# fi
 
-#-----------------------------------------------------------------------
+# #-----------------------------------------------------------------------
 
-# Compila el programa C++ paralelo OPENMP
-g++ -fopenmp -o "$nombre_paralelo_openmp" "$nombre_paralelo_openmp".cpp $parametros_opencv
+# # Compila el programa C++ paralelo OPENMP
+# g++ -fopenmp -o "$nombre_paralelo_openmp" "$nombre_paralelo_openmp".cpp $parametros_opencv
 
-# Verifica si la compilación fue exitosa (Paralelo)
-echo "Ejecutando Programa paralelo OPENMP"
-echo "Programa paralelo OPENMP" >> "$archivo_salida"
-if [ $? -eq 0 ]; then
-  crear_archivo_salida
-  for i in 2 4 8 16; do
-    ejecucion_paralelo=$( { time -p "$nombre_paralelo_openmp" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
-    echo "Video en Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
-    echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
-  done
-else
-  echo "Error: La compilación del programa paralelo falló."
-fi
+# # Verifica si la compilación fue exitosa (Paralelo)
+# echo "Ejecutando Programa paralelo OPENMP"
+# echo "Programa paralelo OPENMP" >> "$archivo_salida"
+# if [ $? -eq 0 ]; then
+#   crear_archivo_salida
+#   for i in 2 4 8 16; do
+#     ejecucion_paralelo=$( { time -p "$nombre_paralelo_openmp" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
+#     echo "Video en Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
+#     echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+#   done
+# else
+#   echo "Error: La compilación del programa paralelo falló."
+# fi
 
 #-----------------------------------------------------------------------
 
@@ -78,3 +80,24 @@ fi
 # else
 #   echo "Error: La compilación del programa paralelo falló."
 # fi
+
+#-----------------------------------------------------------------------
+
+# Compila el programa C++ paralelo OPENMP
+mpic++ -o "$nombre_paralelo_openmpi" "$nombre_paralelo_openmpi".cpp -lm -fopenmp `pkg-config --cflags --libs opencv4`
+
+# Verifica si la compilación fue exitosa (Paralelo)
+echo "Ejecutando Programa paralelo OPENMPI"
+echo "Programa paralelo OPENMPI" >> "$archivo_salida"
+if [ $? -eq 0 ]; then
+  crear_archivo_salida
+  for i in 2 4 8 16; do
+    ejecucion_paralelo=$( { time -p mpirun -np $i --hostfile mpi-hosts "$nombre_paralelo_openmpi" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i" 1; } 2>&1 | grep real | awk '{print $2}' )
+    echo "Video en Paralelo ($i procesos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
+    echo "El programa paralelo con $i procesos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+  done
+else
+  echo "Error: La compilación del programa paralelo falló."
+fi
+
+#-----------------------------------------------------------------------
