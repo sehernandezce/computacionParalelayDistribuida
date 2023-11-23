@@ -8,7 +8,7 @@
 #define WIDTH 1920
 #define HEIGHT 1080
 
-const frame_width = WIDTH/3, frame_height = HEIGHT/3;
+const int frame_width = WIDTH/3, frame_height = HEIGHT/3;
 
 int proceFrame(cv::Mat &frame, cv::Mat &new_frame)
 {   
