@@ -4,16 +4,14 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-#define MAXTHREADS 1
 #define REDUX 3
 #define WIDTH 1920
 #define HEIGHT 1080
 
-const int numThreads = MAXTHREADS, frame_width = WIDTH/3, frame_height = HEIGHT/3;
+const frame_width = WIDTH/3, frame_height = HEIGHT/3;
 
 int proceFrame(cv::Mat &frame, cv::Mat &new_frame)
 {   
-    omp_set_num_threads(numThreads);
     int row = 0, col = 0, i = 0, j = 0, red = 0, green = 0, blue = 0;
     // Procesar el frame
     #pragma omp parallel shared(frame, new_frame) private(row, col, i, j, red, green, blue)
@@ -46,7 +44,7 @@ int main(int argc, char *argv[]) {
 
     char *archive_read = argv[1];
     std::string archive_write = argv[2];
-    int numeroHilos = atoi(argv[3]);
+    int numThreads = atoi(argv[3]);
 
     int processId, numProc, nameLen;
     char processorName[MPI_MAX_PROCESSOR_NAME];
@@ -69,7 +67,7 @@ int main(int argc, char *argv[]) {
     }
 
     cv::VideoCapture inputVideo;
-    cv::VideoWriter outputVideo;
+    // cv::VideoWriter outputVideo;
     int numFrames;
     inputVideo.open(archive_read);
     if (!inputVideo.isOpened()) {
@@ -82,7 +80,8 @@ int main(int argc, char *argv[]) {
     numFrames = static_cast<int>(inputVideo.get(cv::CAP_PROP_FRAME_COUNT));
 
     std::string archive_writecp = archive_write + std::to_string(processId) + ".mp4";
-    outputVideo.open(archive_writecp, cv::VideoWriter::fourcc('X', '2', '6', '4'), fps, cv::Size(frame_width, frame_height));
+
+    cv::VideoWriter outputVideo(archive_writecp, cv::VideoWriter::fourcc('X', '2', '6', '4'), fps, cv::Size(frame_width, frame_height));
 
     cv::Mat frame; // Variable para almacenar el frame capturado
     cv::Mat new_frame(frame_height, frame_width, CV_8UC3);
@@ -98,6 +97,7 @@ int main(int argc, char *argv[]) {
     //     << " on " << processorName << std::endl;
     
     inputVideo.set(cv::CAP_PROP_POS_FRAMES, startFrame);
+    omp_set_num_threads(numThreads);
     for (int itr = startFrame; itr <= endFrame; itr++)
     {
         inputVideo.read(frame);
@@ -151,6 +151,10 @@ int main(int argc, char *argv[]) {
 
 /*
 mpic++ -o video_reduccion_paralelo_openmpi video_reduccion_paralelo_openmpi.cpp -lm -fopenmp `pkg-config --cflags --libs opencv4`
-&& mpirun -np 2 ./video_reduccion_paralelo_openmpi ../media/inputVideo.mp4 ../media/outputVideo 4
+&& mpirun -np 4 --hostfile mpi-hosts ./video_reduccion_paralelo_openmpi ../media/inputVideo.mp4 ../media/outputVideo 4
 --hostfile mpi-hosts
+*/
+
+/*
+/home/mpiuser/shared/computacionParalelayDistribuida/sehernandezce-lumendezm/media/outputVideo.mp4
 */
