@@ -6,7 +6,7 @@
 
 #define PI acos(-1)
 #define PAD 8
-#define MAXTHREADS 2
+#define MAXTHREADS 1
 
 typedef double lf;
 typedef long long ll;
@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     char processorName[MPI_MAX_PROCESSOR_NAME];
 
     MPI_Init(&argc, &argv);
+
 	MPI_Comm_size(MPI_COMM_WORLD, &numProc);
 	MPI_Comm_rank(MPI_COMM_WORLD, &processId);
     MPI_Get_processor_name(processorName, &nameLen);
@@ -78,9 +79,10 @@ int main(int argc, char *argv[])
         printf("PI acos(-1) = %.9lf\n", PI);
         printf("Error = %.9lf\n", PI - calPI);
     }
+    
 	MPI_Finalize();
 }
 
 /*
-mpic++ -o calPI3 calPI3.cpp -lm -fopenmp && mpirun -np 2 ./calPI3
+mpic++ -o calPI3 calPI3.cpp -lm -fopenmp && mpirun -np 2 --hostfile mpi-hosts ./calPI3
 */
