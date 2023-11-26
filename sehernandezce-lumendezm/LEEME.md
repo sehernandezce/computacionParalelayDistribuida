@@ -39,17 +39,31 @@ El video de salida se encuentra en la carpeta media con el nombre outputVideo<Su
 
 3 - Para ejecutar el programa secuencial: 
         
-        time ./video_reduccion_secuencial ../media/inputVideo.mp4 ../media/outputVideo.mp4
+        time ./video_reduccion_secuencial ../media/inputVideo.mp4 ../media/outputVideoSec.mp4
+
+        Parametros: Video de entrada, Video de salida
 
 4 - Para ejecutar el programa paralelo: 
        
-        time ./video_reduccion_paralelo ../media/inputVideo.mp4 ../media/outputVideo.mp4 4
+        time ./video_reduccion_paralelo ../media/inputVideo.mp4 ../media/outputVideoOpenMp.mp4 4
+
+        Parametros: Video de entrada, Video de salida, Numero de hilos
 
 # Practica 2 - Video Reduccion de Resolucion (Paralelo con CUDA C/C++)
 
 Esta se realizo en google Colab, por lo que se puede ejecutar en cualquier navegador web. Se aclara que en el comando ejecutar todo no se ejecuta el programa de CUDA.
 
 https://colab.research.google.com/drive/1-EBPeTqQV-aYDNtXynA2te4x9OTna5W4?usp=sharing
+
+1. Compilar programa:
+
+        nvcc -w -o video_reduction_cuda video_reduction_cuda.cu `pkg-config --cflags --libs opencv4` -std=c++11
+
+2. Ejecutar programa:
+
+        time -p ./video_reduction_cuda ../media/inputVideo.mp4 ../media/outputVideoCuda.mp4 32
+
+        Parametros: Video de entrada, Video de salida, Numero de hilos (Ejemplo: 32 => 32x32 = 1024 hilos)
 
 # Practica 3 - Video Reduccion de Resolucion (Paralelo con OpenMPI)
 
@@ -117,13 +131,16 @@ Comandos en cliente:
         
         sudo chmod 600 ~/.ssh/authorized_keys
 
-Ejecutar programa:
+1. Compilar programa:
 
         mpic++ -o video_reduccion_paralelo_openmpi video_reduccion_paralelo_openmpi.cpp -lm -fopenmp `pkg-config --cflags --libs opencv4`
         
-        time mpirun -np 2 --hostfile mpi-hosts ./video_reduccion_paralelo_openmpi ../media/inputVideo.mp4 ../media/outputVideo 1
+2. Ejecutar programa:
 
+        time mpirun -np 2 --hostfile mpi-hosts ./video_reduccion_paralelo_openmpi ../media/inputVideo.mp4 ../media outputVideoOpenMpi 1
 
+        Parametros: Numero de procesos, archivo de configuración de host, Video de entrada, Video de salida, Numero de hilos
+ 
 # Windows (Secuencial y openMP) - REVISAR
 1 - Descargar opencv https://opencv.org/releases/
 
