@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 
     int framesForNode = numFrames / (numProc);
     int startFrame = (processId) * framesForNode;
-    int endFrame = (processId == numProc- - 1) ? (numFrames - 1) : (startFrame + framesForNode - 1);
+    int endFrame = (processId == numProc - 1) ? (numFrames - 1) : (startFrame + framesForNode - 1);
 
     // int framesLocal = (framesForNode  / numThreads);
     // std::cout << numFrames << " " << framesForNode << " " << startFrame << " " << endFrame 
