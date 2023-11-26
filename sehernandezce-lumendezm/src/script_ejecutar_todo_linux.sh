@@ -27,39 +27,41 @@ crear_archivo_salida() {
   fi
 }
 
-# # # Compila el programa C++ secuencial
-# g++ -o "$nombre_secuencial" "$nombre_secuencial".cpp $parametros_opencv
+# # Compila el programa C++ secuencial
+g++ -o "$nombre_secuencial" "$nombre_secuencial".cpp $parametros_opencv
 
-# # Verifica si la compilación fue exitosa (secuencial)
-# echo "Ejecutando Programa secuencial"
-# echo "Programa secuencial" >> "$archivo_salida"
-# if [ $? -eq 0 ]; then
-#   ejecucion_secuencial=$( { time -p "$nombre_secuencial" "$archivo_video_entrada".mp4 "$archivo_video_salida_sec".mp4; } 2>&1 | grep real | awk '{print $2}' )
-#   crear_archivo_salida
-#   echo "Video en Secuencial = $ejecucion_secuencial segundos" > "$archivo_salida"
-#   echo "El programa secuencial se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
-# else
-#   echo "Error: La compilación del programa secuencial falló."
-# fi
+# Verifica si la compilación fue exitosa (secuencial)
+echo "Ejecutando Programa secuencial"
+echo "Programa secuencial" >> "$archivo_salida"
+if [ $? -eq 0 ]; then
+  ejecucion_secuencial=$( { time -p "$nombre_secuencial" "$archivo_video_entrada".mp4 "$archivo_video_salida_sec".mp4; } 2>&1 | grep real | awk '{print $2}' )
+  crear_archivo_salida
+  echo "Video en Secuencial = $ejecucion_secuencial segundos" > "$archivo_salida"
+  echo "El programa secuencial se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+else
+  echo "Error: La compilación del programa secuencial falló."
+fi
+echo "#-----------------------------------------------------------------------" >> "$archivo_salida" 
 
-# #-----------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
-# # Compila el programa C++ paralelo OPENMP
-# g++ -fopenmp -o "$nombre_paralelo_openmp" "$nombre_paralelo_openmp".cpp $parametros_opencv
+# Compila el programa C++ paralelo OPENMP
+g++ -fopenmp -o "$nombre_paralelo_openmp" "$nombre_paralelo_openmp".cpp $parametros_opencv
 
-# # Verifica si la compilación fue exitosa (Paralelo)
-# echo "Ejecutando Programa paralelo OPENMP"
-# echo "Programa paralelo OPENMP" >> "$archivo_salida"
-# if [ $? -eq 0 ]; then
-#   crear_archivo_salida
-#   for i in 2 4 8 16; do
-#     ejecucion_paralelo=$( { time -p "$nombre_paralelo_openmp" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
-#     echo "Video en Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
-#     echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
-#   done
-# else
-#   echo "Error: La compilación del programa paralelo falló."
-# fi
+# Verifica si la compilación fue exitosa (Paralelo)
+echo "Ejecutando Programa paralelo OPENMP"
+echo "Programa paralelo OPENMP" >> "$archivo_salida"
+if [ $? -eq 0 ]; then
+  crear_archivo_salida
+  for i in 2 4 8 16; do
+    ejecucion_paralelo=$( { time -p "$nombre_paralelo_openmp" "$archivo_video_entrada".mp4 "$archivo_video_salida_Openmp$i".mp4 $i; } 2>&1 | grep real | awk '{print $2}' )
+    echo "Video en Paralelo ($i hilos) = $ejecucion_paralelo segundos" >> "$archivo_salida"
+    echo "El programa paralelo con $i hilos se ha ejecutado y el tiempo real se ha almacenado en $archivo_salida."
+  done
+else
+  echo "Error: La compilación del programa paralelo falló."
+fi
+echo "#-----------------------------------------------------------------------" >> "$archivo_salida" 
 
 #-----------------------------------------------------------------------
 
@@ -80,7 +82,7 @@ crear_archivo_salida() {
 # else
 #   echo "Error: La compilación del programa paralelo falló."
 # fi
-
+# echo "#-----------------------------------------------------------------------" >> "$archivo_salida" 
 #-----------------------------------------------------------------------
 
 # Compila el programa C++ paralelo OPENMP
@@ -99,5 +101,5 @@ if [ $? -eq 0 ]; then
 else
   echo "Error: La compilación del programa paralelo falló."
 fi
-
+echo "#-----------------------------------------------------------------------" >> "$archivo_salida" 
 #-----------------------------------------------------------------------
